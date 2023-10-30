@@ -28,8 +28,8 @@ List some key features or functionalities of your project.
 Provide instructions on how to install or set up your project. Include any prerequisites or dependencies.
 
 ```bash
-$ git clone https://github.com/yourusername/yourproject.git
-$ cd yourproject
+$ git clone https://github.com/yourusername/Your_Tutorials.git
+$ cd Your_Tutorials
 $ npm install
 
 import youtube_tutorial
