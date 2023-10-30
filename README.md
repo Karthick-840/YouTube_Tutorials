@@ -32,10 +32,10 @@ $ git clone https://github.com/yourusername/yourproject.git
 $ cd yourproject
 $ npm install
 
-import yourmodule
+import youtube_tutorial
 
 # Usage example
-result = yourmodule.do_something()
+result = g()
 ```
 
 Feel free to modify and expand this template to suit your project's specific needs. Markdown is a versatile format for creating documentation and README files, and you can include various formatting, links, images, and more to provide comprehensive project information.
