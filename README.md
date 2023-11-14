@@ -18,8 +18,9 @@ YouTube_Tutorials is a project aimed at creating a personalized learning plan ba
 ## Features
 
 - **Playlist Integration:** Connect your YouTube playlist to create a tailored learning plan.
-- **Calendar Export:** Generate calendar files compatible with Google Calendar or Outlook Calendar.
 - **Custom Scheduling:** Plan your learning sessions based on your availability and preferences.
+- **Calendar Export:** Generate calendar files compatible with Google Calendar or Outlook Calendar.
+
 
 ## Installation
 
