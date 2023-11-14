@@ -1,8 +1,8 @@
 from support_functions import convert_seconds_to_hms, extract_keywords
-
+from icalendar import Calendar, Event
+from datetime import datetime, timedelta
 from pytube import YouTube, Playlist
 import pandas as pd
-from datetime import timedelta
 
 
 
@@ -47,11 +47,11 @@ def create_video_data(playlist_url):
         # Extract video title, run time, and video link
         video_title = video.title
         video_duration = convert_seconds_to_hms(video.length)
-        video_description = video.description
 
         # Extract keywords from the video title and description
-        title_keywords = extract_keywords(video_title)# Extract keywords from the video description (if available)
-         # Extract keywords from the video.keywords (if available)
+        title_keywords = extract_keywords(video_title)
+
+        # Extract keywords from the video.keywords (if available)
         video_keywords = video.keywords
         if video_keywords:
             keyword_string = ", ".join(video_keywords)
@@ -65,3 +65,49 @@ def create_video_data(playlist_url):
         df = df.append({'Video Title': video_title, 'Run Time': video_duration, 'Video Link': video.watch_url, 'Keywords': keywords_string}, ignore_index=True)
         
     return df
+
+def create_calender(video_details):
+    
+    # Initialize the iCalendar
+    cal = Calendar()
+
+    for _,ROW in video_details.iterrows():
+        
+        # Define a start date and time
+        start_date = pd.to_datetime(ROW['Start Date'] + ' ' + ROW['Start Time']) 
+        
+        playlist_data = create_video_data(ROW['Video Link'])
+        if ROW['Title'] == 'hg':
+            sort_by_runtime= True
+        else:
+            sort_by_runtime=False
+            
+        df = create_learning_group(playlist_data,int(ROW['Time to Spend']),sort_by_runtime)
+
+        # Group the DataFrame by 'Category'
+        df_dict = dict(iter(df.groupby('Group')))
+        
+        for group, dft in df_dict.items():
+        # Calculate event duration from Run Time
+            duration = timedelta(minutes=int(ROW['Time to Spend']))
+
+            # Skip weekends (Saturday and Sunday)
+            while start_date.weekday() >= 5:  # 5 and 6 correspond to Saturday and Sunday
+                start_date += timedelta(days=1)
+
+            # Create an event for each row
+            event = Event()
+            event.add('summary',ROW['Title']+ group)
+            event.add('dtstart', start_date)
+            event.add('dtend', start_date + duration)
+
+            # Combine Video Link and Description in the description field
+            event.add('description', dft)
+
+            cal.add_component(event)
+
+            # Increment start date for the next event
+            start_date += timedelta(days=1)
+
+
+    return cal
