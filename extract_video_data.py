@@ -35,12 +35,54 @@ def get_runtime_and_title(url):
    
     return video_data
 
+def get_runtime_data(url):
+    if not 'playlist' in url:
+        video = YouTube(url)
+        video_title = video.title
+        video_runtime = convert_seconds_to_hms(video.length)
+
+        # extract keywords from the video
+        keywords_string = extract_keywords(video_title) + extract_keywords (video.keywords)
+        video_keywords =  ", ".join(all_keywords)
+
+        video_data = {"Title": video_title, "Run Time": video_runtime,"Video Count":1,"Video Keywords": video_keywords,
+        "Video Link": url}
+        break
+
+    else:
+        playlist = Playlist(url)
+        # Create an empty DataFrame to store the video data
+        df = pd.DataFrame(columns=['Video Title', 'Run Time', 'Video Link', 'Keywords'])
+
+        total_runtime = 0
+        video_count = 0
+        for video in playlist.videos:
+            total_runtime += video.length
+            video_count += 1
+            video_thumbnails.append(video.thumbnail_url)
+
+        average_playtime = total_runtime / video_count if video_count > 0 else 0
+
+        video_data = {
+            "Title": playlist.title,
+            "Average Playtime": convert_seconds_to_hms(average_playtime),
+            "Total Runtime": convert_seconds_to_hms(total_runtime),
+            "Video Count": video_count,
+            "Video Thumbnails": video_thumbnails,
+            "Video Link": url
+        }
+
+    else:
+        video = YouTube(url)
+        
+   
+    return video_data
+
 
 def create_video_data(playlist_url):
     
     playlist = Playlist(playlist_url)
-    # Create an empty DataFrame to store the video data
-    df = pd.DataFrame(columns=['Video Title', 'Run Time', 'Video Link', 'Keywords'])
+    
 
     # Iterate through the videos in the playlist
     for video in playlist.videos:

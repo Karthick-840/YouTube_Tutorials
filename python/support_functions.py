@@ -14,20 +14,27 @@ def convert_seconds_to_hms(seconds):
     return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
         
 # Define a function to extract keywords from text
-def extract_keywords(text):
-    # Use regular expressions to remove special characters, symbols, and numbers
-    cleaned_text = re.sub(r'[^a-zA-Z\s]', '', text)
+def extract_keywords(video_keywords):
+
+    while bool(video_keywords):
+        if isinstance(video_keywords,list):
+            text = ", ".join(video_keywords)
+        else:
+            text = video_keywords
+
+        # Use regular expressions to remove special characters, symbols, and numbers
+        cleaned_text = re.sub(r'[^a-zA-Z\s]', '', text)
+        
+        # Tokenize the cleaned text
+        words = word_tokenize(cleaned_text)
+        # Create a list of English stopwords and additional common words to exclude
+        custom_stopwords = set(stopwords.words("english") + ["for", "or", "and", "the", "is", "are", "it", "in", "on"])
+        
+        # Remove punctuation, stopwords and common words and also lowercase the words
+        words = [word.lower() for word in words if word.isalpha()]
+        words = [word for word in words if word not in custom_stopwords]
     
-    # Tokenize the cleaned text
-    words = word_tokenize(cleaned_text)
-    # Create a list of English stopwords and additional common words to exclude
-    custom_stopwords = set(stopwords.words("english") + ["for", "or", "and", "the", "is", "are", "it", "in", "on"])
-    
-    # Remove punctuation, stopwords and common words and also lowercase the words
-    words = [word.lower() for word in words if word.isalpha()]
-    words = [word for word in words if word not in custom_stopwords]
-    
-    return words
+        return words
 
 
 
