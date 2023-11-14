@@ -1,9 +1,10 @@
-pytube
-icalendar
-qgrid
-pandas 
+pytube==11.0.0
+icalendar==4.0.9
+qgrid==1.3.1
+pandas==1.3.3
+nltk==3.6.3
+ipywidgets==7.7.1
 datetime
-re
-ntlk
 math
-ipywidgets
+re
+
