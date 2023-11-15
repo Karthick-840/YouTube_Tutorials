@@ -1,6 +1,6 @@
-# YouTube_Tutorials
+# YouTube Tutorials
 
-Create a learning plan based on YouTube tutorials.
+Create a personalized learning plan based on YouTube tutorials.
 
 ## Table of Contents
 
@@ -13,7 +13,11 @@ Create a learning plan based on YouTube tutorials.
 
 ## Introduction
 
-YouTube_Tutorials is a project aimed at creating a personalized learning plan based on YouTube tutorials. It generates a calendar file that can be integrated into Google Calendar or Outlook Calendar, making it easy to schedule your learning sessions.
+YouTube_Tutorials is a Flask web app designed to help you create a personalized learning plan based on YouTube playlists. 
+
+It helps you to schedule your learning sessions using a self-curated or pre-exisiting playlist to generate calendar files for integration with Google Calendar or Outlook Calendar,
+
+It makes it easy to schedule your learning sessions.
 
 ## Features
 
@@ -21,46 +25,54 @@ YouTube_Tutorials is a project aimed at creating a personalized learning plan ba
 - **Custom Scheduling:** Plan your learning sessions based on your availability and preferences.
 - **Calendar Export:** Generate calendar files compatible with Google Calendar or Outlook Calendar.
 
+## Usage
+
+1. **Create Playlist:** in youtube or use a pre-existing playlist.
+2. **Visit the App Online:** at [YouTube Tutorials App](https://your-youtube-tutorials-app-name.herokuapp.com/)  and input the playlist URL into the search bar.
+3. **Explore Scheduling options:** by provide general information about when you plan to study.
+4. **Follow On-Screen Instructions:** to generate a learning plan.
+5. **Integrate with Google/Outlook:** by following the prompts to connect to Google Calendar or Outlook Calendar via API (option available to download the .ics file) .
+
 
 ## Installation
 
-Provide instructions on how to install or set up your project. Include any dependencies or requirements.
-```bash
-$ git clone https://github.com/yourusername/Your_Tutorials.git
-$ cd Your_Tutorials
-$ npm install
+Follow these steps to set up and run the YouTube_Tutorials app locally:
 
-import youtube_tutorial
+1. **Clone the Repository:**
+    ```bash
+    $ git clone https://github.com/yourusername/Your_Tutorials.git
+    $ cd Your_Tutorials
 
-# Usage example
-result = g()
-```
+    import youtube_tutorial
 
-## Usage
+2. **Set Up a Virtual Environment:**
 
-1. Create a YouTube playlist with the tutorials you want to learn.
-2. Visit the [VM link](#) to run the virtual machine.
-3. Input the playlist URL into the search bar.
-4. Provide general information about when you plan to study.
-5. The repository will generate a calendar file for your learning plan.
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+    ```
+
+3. **Install Dependencies:**
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. **Run the Flask App:**
+
+    ```bash
+    export FLASK_APP=app
+    export FLASK_ENV=development
+    flask run
+    ```
+
+    Visit [http://127.0.0.1:5000/](http://127.0.0.1:5000/) in your browser to access the app locally.
 
 ## Contributing
 
-If you'd like to contribute to this project, follow these steps:
-
-1. Fork the repository.
-2. Create a new branch for your feature: `git checkout -b feature-name`.
-3. Make your changes and commit: `git commit -m 'Add a new feature'`.
-4. Push to the branch: `git push origin feature-name`.
-5. Submit a pull request.
+If you'd like to contribute to this project, Please submit a pull request.
 
 ## License
 
 This project is licensed under the [Your License] License - see the [LICENSE.md](LICENSE.md) file for details.
-# YouTube_Tutorials
 
-A short description of your project goes here.
-
-
-
-Feel free to modify and expand this template to suit your project's specific needs. Markdown is a versatile format for creating documentation and README files, and you can include various formatting, links, images, and more to provide comprehensive project information.
