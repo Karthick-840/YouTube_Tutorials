@@ -1,162 +1,120 @@
 from icalendar import Calendar, Event
 from datetime import datetime, timedelta
-from pytube import YouTube, Playlist
+from pytube import YouTube, Playlist, Search
+from pytube.exceptions import VideoUnavailable
 import pandas as pd
-#from support_functions import extract_keywords, convert_seconds_to_hms
+from datetime import timedelta
+import re
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+nltk.download("stopwords")
+nltk.download("punkt")
 
-def convert_seconds_to_hms(seconds):
-    hours, remainder = divmod(seconds, 3600)
-    minutes, seconds = divmod(remainder, 60)
-    return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+
+class Playlist_Info():
+    def __init__(self,url) -> None:
+        self.url = url
         
-
-def get_runtime_and_title(url):
-    if 'playlist' in url:
-        playlist = Playlist(url)
-        total_runtime = 0
-        video_count = 0
-        for video in playlist.videos:
-            total_runtime += video.length
-            video_count += 1
+        if not self.url or not isinstance(self.url, str):
+            raise ValueError("Invalid URL provided.")
+        
             
-
-        video_data = {
-            "Title": playlist.title,
-            "Run Time": convert_seconds_to_hms(total_runtime),
-            "Video Count": video_count,
-            "Video Link": url,
-            "Keywords": ""
-        }
-
-    else:
-        video = YouTube(url)
-        title = video.title
-        runtime = video.length
-        keywords_string = extract_keywords(video_title) + extract_keywords (video.keywords) + extract_keywords (video.description)
-        #video_keywords =  ", ".join(keywords_string)
-        video_data = {"Title": title, 
-                      "Run Time": convert_seconds_to_hms(runtime),
-                      "Video Count":1,
-                      "Video Link": url,
-                      "Keywords": ""
-                      
-                      }
-   
-    return video_data
-
-def get_runtime_data(url):
-    if not 'playlist' in url:
-        video = YouTube(url)
-        video_title = video.title
-        video_runtime = convert_seconds_to_hms(video.length)
-
-        # extract keywords from the video
-        keywords_string = extract_keywords(video_title) + extract_keywords (video.keywords)
-        video_keywords =  ", ".join(all_keywords)
-
-        video_data = {"Title": video_title, "Run Time": video_runtime,"Video Count":1,"Video Keywords": video_keywords,
-        "Video Link": url}
+    def get_info(self):
         
-
-    else:
-        playlist = Playlist(url)
+        info = []
+        if 'playlist' in self.url: 
+            info = self.get_playlist_data()
+        else:
+            info = self.get_video_data(self.url)
+            
+        video_details = pd.DataFrame(info)
+        video_details = video_details.assign(Start_Date=None, Start_Time=None, Time_to_Spend=None)
+        return video_details
+                
+    def get_playlist_data(self):
+        playlist = Playlist(self.url)
         # Create an empty DataFrame to store the video data
-        df = pd.DataFrame(columns=['Video Title', 'Run Time', 'Video Link', 'Keywords'])
-
-        total_runtime = 0
-        video_count = 0
-        for video in playlist.videos:
-            total_runtime += video.length
-            video_count += 1
-            video_thumbnails.append(video.thumbnail_url)
-
-        average_playtime = total_runtime / video_count if video_count > 0 else 0
-
-        video_data = {
-            "Title": playlist.title,
-            "Average Playtime": convert_seconds_to_hms(average_playtime),
-            "Total Runtime": convert_seconds_to_hms(total_runtime),
-            "Video Count": video_count,
-            "Video Thumbnails": video_thumbnails,
-            "Video Link": url
-        }
-
-    
-   
-    return video_data
-
-
-def create_video_data(playlist_url):
-    
-    playlist = Playlist(playlist_url)
-    
-
-    # Iterate through the videos in the playlist
-    for video in playlist.videos:
-        # Extract video title, run time, and video link
-        video_title = video.title
-        video_duration = convert_seconds_to_hms(video.length)
-
-        # Extract keywords from the video title and description
-        title_keywords = extract_keywords(video_title)
-
-        # Extract keywords from the video.keywords (if available)
-        video_keywords = video.keywords
-        if video_keywords:
-            keyword_string = ", ".join(video_keywords)
-        else:
-            keyword_string = ""
-
-        all_keywords = title_keywords + video_keywords
-        keywords_string = ", ".join(all_keywords)
-
-        # Append video information and keywords to the DataFrame
-        df = df.append({'Video Title': video_title, 'Run Time': video_duration, 'Video Link': video.watch_url, 'Keywords': keywords_string}, ignore_index=True)
+        playlist_data = []
         
-    return df
-
-def create_calender(video_details):
-    
-    # Initialize the iCalendar
-    cal = Calendar()
-
-    for _,ROW in video_details.iterrows():
-        
-        # Define a start date and time
-        start_date = pd.to_datetime(ROW['Start Date'] + ' ' + ROW['Start Time']) 
-        
-        playlist_data = create_video_data(ROW['Video Link'])
-        if ROW['Title'] == 'hg':
-            sort_by_runtime= True
-        else:
-            sort_by_runtime=False
+        for url in playlist.video_urls:
+            playlist_data.append(self.get_video_data(url))
             
-        df = create_learning_group(playlist_data,int(ROW['Time to Spend']),sort_by_runtime)
+        return playlist_data
+    
+    @staticmethod
+    def get_video_data(url):
+        try:
+             yt = YouTube(url)
+        except VideoUnavailable:
+             print(f'Video {url} is unavaialable, skipping.')
+        else:
+            video = YouTube(url)
+            video_title = video.title
+            video_runtime = Playlist_Info.convert_seconds_to_hms(video.length)
+            
 
-        # Group the DataFrame by 'Category'
-        df_dict = dict(iter(df.groupby('Group')))
+            # extract keywords from the video
+            keywords_string = []
+            #keywords_string = extract_keywords(video_title) + extract_keywords (video.keywords)
+            #keywords_string =  ", ".join(keywords_string)
+
+            video_data = {"Video Title": video_title, "Run Time": video_runtime, "Video Link": url,"Video Keywords": keywords_string}
+            
+            return video_data
+    
+    @staticmethod
+    def convert_seconds_to_hms(seconds):
+        hours, remainder = divmod(seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+    
+    @staticmethod
+    # Define a function to extract keywords from text
+    def extract_keywords(video_keywords):
+
+        while bool(video_keywords):
+            if isinstance(video_keywords,list):
+                text = ", ".join(video_keywords)
+            else:
+                text = video_keywords
+
+            # Use regular expressions to remove special characters, symbols, and numbers
+            cleaned_text = re.sub(r'[^a-zA-Z\s]', '', text)
+            
+            # Tokenize the cleaned text
+            words = word_tokenize(cleaned_text)
+            # Create a list of English stopwords and additional common words to exclude
+            custom_stopwords = set(stopwords.words("english") + ["for", "or", "and", "the", "is", "are", "it", "in", "on"])
+            
+            # Remove punctuation, stopwords and common words and also lowercase the words
+            words = [word.lower() for word in words if word.isalpha()]
+            words = [word for word in words if word not in custom_stopwords]
         
-        for group, dft in df_dict.items():
-        # Calculate event duration from Run Time
-            duration = timedelta(minutes=int(ROW['Time to Spend']))
+            return words
 
-            # Skip weekends (Saturday and Sunday)
-            while start_date.weekday() >= 5:  # 5 and 6 correspond to Saturday and Sunday
-                start_date += timedelta(days=1)
-
-            # Create an event for each row
-            event = Event()
-            event.add('summary',ROW['Title']+ group)
-            event.add('dtstart', start_date)
-            event.add('dtend', start_date + duration)
-
-            # Combine Video Link and Description in the description field
-            event.add('description', dft)
-
-            cal.add_component(event)
-
-            # Increment start date for the next event
-            start_date += timedelta(days=1)
+    def search_similar():
+        
+        s = Search('YouTube Rewind')
+        len(s.results)
+        print(s.results)
+        s.get_next_results()
+        s.completion_suggestions
 
 
-    return cal
+    # Define the URL of the YouTube playlist
+
+
+# List of playlist URLs
+sample_playlist_urls = ["https://www.youtube.com/playlist?list=PLe0U7sHuld_qIILgg-2ESRCPWu-WBalFJ",
+"https://www.youtube.com/playlist?list=PLAeu18HndGgBR-QLw8b8Wzp0gLiVfCS7n",
+"https://www.youtube.com/playlist?list=PLe0U7sHuld_pZllkKAojENaQLYeOWfED7",
+"https://www.youtube.com/playlist?list=PLOlK8ytA0MgjYGVrz0hS4w3UPQ1-VV2uX",
+"https://www.youtube.com/playlist?list=PLqnslRFeH2UqLwzS0AwKDKLrpYBKzLBy2",
+"https://www.youtube.com/playlist?list=PL7yh-TELLS1FuqLSjl5bgiQIEH25VEmIc",
+"https://www.youtube.com/playlist?list=PLUOa-qvvZolCoiF8CuqCyVU9tG2v8cjE6",
+"https://www.youtube.com/playlist?list=PLUkh9m2BorqnKWu0g5ZUps_CbQ-JGtbI9",
+"https://www.youtube.com/playlist?list=PLAeu18HndGgBR-QLw8b8Wzp0gLiVfCS7n",
+"https://www.youtube.com/playlist?list=PLAeu18HndGgDAWJOAPaqARiMkMJ1u-EOm",
+"https://www.youtube.com/playlist?list=PLAeu18HndGgD-btpZ7rb358WGAHH1-ZcU",
+"https://www.youtube.com/playlist?list=PLAeu18HndGgB-KWCMyZCKCgZbpik2I9A3"]
