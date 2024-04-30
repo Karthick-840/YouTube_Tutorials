@@ -1,10 +1,14 @@
-from support_functions import convert_seconds_to_hms, extract_keywords
 from icalendar import Calendar, Event
 from datetime import datetime, timedelta
 from pytube import YouTube, Playlist
 import pandas as pd
+#from support_functions import extract_keywords, convert_seconds_to_hms
 
-
+def convert_seconds_to_hms(seconds):
+    hours, remainder = divmod(seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+        
 
 def get_runtime_and_title(url):
     if 'playlist' in url:
@@ -14,24 +18,29 @@ def get_runtime_and_title(url):
         for video in playlist.videos:
             total_runtime += video.length
             video_count += 1
-            video_thumbnails.append(video.thumbnail_url)
-
-        average_playtime = total_runtime / video_count if video_count > 0 else 0
+            
 
         video_data = {
             "Title": playlist.title,
-            "Average Playtime": convert_seconds_to_hms(average_playtime),
-            "Total Runtime": convert_seconds_to_hms(total_runtime),
+            "Run Time": convert_seconds_to_hms(total_runtime),
             "Video Count": video_count,
-            "Video Thumbnails": video_thumbnails,
-            "Video Link": url
+            "Video Link": url,
+            "Keywords": ""
         }
 
     else:
         video = YouTube(url)
         title = video.title
         runtime = video.length
-        video_data = {"Title": title, "Run Time": convert_seconds_to_hms(runtime),"Video Count":1,"Video Link": url}
+        keywords_string = extract_keywords(video_title) + extract_keywords (video.keywords) + extract_keywords (video.description)
+        #video_keywords =  ", ".join(keywords_string)
+        video_data = {"Title": title, 
+                      "Run Time": convert_seconds_to_hms(runtime),
+                      "Video Count":1,
+                      "Video Link": url,
+                      "Keywords": ""
+                      
+                      }
    
     return video_data
 
@@ -47,7 +56,7 @@ def get_runtime_data(url):
 
         video_data = {"Title": video_title, "Run Time": video_runtime,"Video Count":1,"Video Keywords": video_keywords,
         "Video Link": url}
-        break
+        
 
     else:
         playlist = Playlist(url)
@@ -72,9 +81,7 @@ def get_runtime_data(url):
             "Video Link": url
         }
 
-    else:
-        video = YouTube(url)
-        
+    
    
     return video_data
 
