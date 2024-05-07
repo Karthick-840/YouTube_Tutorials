@@ -37,9 +37,8 @@ if __name__ == '__main__':
     data = []
     for url in urls:
         info = Playlist_Info(url)
-        data.append({key: value for key, value in info.items()})
+        data.append(info.get_info())
         
-        print(info.get_info())
     
     if data:
         with open('data.pkl', 'wb') as f:
