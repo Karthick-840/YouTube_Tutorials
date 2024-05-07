@@ -21,7 +21,7 @@ It makes it easy to schedule your learning sessions.
 
 ## Features
 
-- **Playlist Integration:** Connect your YouTube playlist to create a tailored learning plan.
+- **Playlist Integration:** Connect your YouTube playlist to create a tailored playlist to suit your learning plan.
 - **Custom Scheduling:** Plan your learning sessions based on your availability and preferences.
 - **Calendar Export:** Generate calendar files compatible with Google Calendar or Outlook Calendar.
 
@@ -74,5 +74,6 @@ If you'd like to contribute to this project, Please submit a pull request.
 
 ## License
 
-This project is licensed under the [Your License] License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
 
