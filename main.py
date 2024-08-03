@@ -13,9 +13,14 @@ if __name__ == '__main__':
     #app.run(debug=True)
     #video_data = get_runtime_data("https://www.youtube.com/playlist?list=PLe0U7sHuld_qIILgg-2ESRCPWu-WBalFJ")
     #print(video_data)
+    
+    # %%
     url1 = "https://www.youtube.com/playlist?list=PLwFJcsJ61ouizyVPDIjomZFb2S_zcJebP"
     url = "https://www.youtube.com/playlist?list=PLe0U7sHuld_qIILgg-2ESRCPWu-WBalFJ"
+    print(url)
     
+    # %%
+
     urls = ['https://www.youtube.com/playlist?list=PL4cUxeGkcC9hxjeEtdHFNYMtCpjNBm3h7',
             'https://www.youtube.com/playlist?list=PL_Ct8Cox2p8UlTfHyJc3RDGuGktPNs9Q3',
             'https://www.youtube.com/playlist?list=PLwFJcsJ61ouizyVPDIjomZFb2S_zcJebP',
@@ -59,3 +64,4 @@ https://developers.google.com/youtube/v3
 
 Boosan - portfolio -https://www.youtube.com/watch?v=Ji5Cg2O_XDs
 """
+# %%
