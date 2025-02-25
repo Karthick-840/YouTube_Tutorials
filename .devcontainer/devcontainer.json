@@ -1,0 +1,29 @@
+{
+    "name": "Python + SQLite Setup",
+    "image": "mcr.microsoft.com/vscode/devcontainers/python:3.10", // You can use your desired Python version
+    "settings": {
+      "python.pythonPath": "/usr/local/bin/python3",
+      "python.defaultInterpreterPath": "/usr/local/bin/python3",
+      "editor.formatOnSave": true,
+      "python.linting.enabled": true,
+      "python.linting.flake8Enabled": true,
+      "python.formatting.provider": "black",
+      "python.analysis.typeCheckingMode": "basic"
+    },
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "ms-python.python", // Python extension
+          "ms-python.vscode-pylance", // Pylance for IntelliSense
+          "mtxr.sqltools", // SQL tools for working with databases
+          "mtxr.sqltools-driver-pg", // PostgreSQL driver for SQL tools
+          "mechatroner.rainbow-csv", // Colorize CSV files
+          "aaron-bond.better-comments", // Improved comment readability with color-coding
+          "github.copilot", // GitHub Copilot for AI-powered code suggestions
+          "alexcvzz.vscode-sqlite" // SQLite extension
+        ]
+      }
+    },
+    "postCreateCommand": "chmod +x ./project_setup.sh && ./project_setup.sh",
+    "remoteUser": "vscode"
+  }

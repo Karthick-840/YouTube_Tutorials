@@ -1,0 +1,20 @@
+{
+    "recommendations": [
+        "ms-azuretools.vscode-docker", // Docker support for managing containers and images in VS Code
+        "ms-python.black-formatter", // Automatically formats Python code with Black formatter
+        "ms-vscode-remote.remote-containers", // Work with Dev Containers directly within VS Code
+        "ms-vscode-remote.remote-ssh", // Connect and develop on remote machines over SSH
+        "ms-vscode-remote.remote-ssh-edit", // Edit remote configuration files over SSH
+        "ms-vscode.vscode-node-azure-pack", // Azure support for Node.js development
+        "hashicorp.terraform", // Terraform extension for managing infrastructure with code
+        "redhat.vscode-yaml", // YAML support with validation and autocompletion
+        "ms-python.python", // Python support in VS Code
+        "ms-python.vscode-pylance", // Pylance for Python language support
+        "eamodio.gitlens", // GitLens for enhanced Git capabilities
+        "mhutchie.git-graph", // Git Graph for visualizing Git history
+        "github.vscode-pull-request-github", // GitHub Pull Requests and Issues
+        "esbenp.prettier-vscode", // Prettier for code formatting
+        "streetsidesoftware.code-spell-checker", // Spell checker for code
+        "visualstudioexptteam.vscodeintellicode" // IntelliCode for AI-assisted code completions
+    ]
+}

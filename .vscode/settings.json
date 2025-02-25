@@ -1,0 +1,73 @@
+{
+    "python.defaultInterpreterPath": ".venv/bin/python",
+    "python.pythonPath": ".venv/bin/python",
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.mypyEnabled": true,
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+      "--line-length",
+      "88"
+    ],
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": true,
+    "python.testing.autoTestDiscoverOnSaveEnabled": true,
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "files.exclude": {
+      "**/__pycache__": true,
+      "**/.pytest_cache": true,
+      "**/*.pyc": true,
+      "**/env": true,
+      "**/venv": true
+    },
+    "python.analysis.extraPaths": [
+      "./src", // Add your source code directory for better IntelliSense
+      "./lib" // Add your library directory for better IntelliSense
+    ],
+    "python.analysis.autoImportCompletions": true, // Enable auto-import suggestions
+    "python.analysis.typeCheckingMode": "basic", // Enable basic type checking
+    "python.analysis.diagnosticSeverityOverrides": {
+      "reportMissingImports": "warning", // Show warnings for missing imports
+      "reportOptionalSubscript": "warning" // Show warnings for optional subscript
+    },
+    "python.dataScience.jupyterServerURI": "local", // Use local Jupyter server for notebooks
+    "python.dataScience.sendSelectionToInteractiveWindow": true, // Send code selection to interactive window
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.suggestSelection": "first", // Always select the first suggestion
+    "editor.tabCompletion": "on", // Enable tab completion
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": true,
+      "strings": true
+    },
+    "explorer.fileNesting.patterns": {
+      "*.ts": "${capture}.js",
+      "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+      "*.jsx": "${capture}.js",
+      "*.tsx": "${capture}.ts",
+      "tsconfig.json": "tsconfig.*.json",
+      "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb",
+      "*.sqlite": "${capture}.${extname}-*",
+      "*.db": "${capture}.${extname}-*",
+      "*.sqlite3": "${capture}.${extname}-*",
+      "*.db3": "${capture}.${extname}-*",
+      "*.sdb": "${capture}.${extname}-*",
+      "*.s3db": "${capture}.${extname}-*"
+    },
+    "explorer.confirmDragAndDrop": false,
+    "python.terminal.activateEnvironment": true,
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.integrated.defaultProfile.windows": "Command Prompt",
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "workbench.startupEditor": "newUntitledFile",
+    "workbench.editor.enablePreview": true
+  }
